@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -30,7 +31,9 @@ public class MainActivity extends AppCompatActivity
 
     public void OnClickAddButton(View view)
     {
+        ImageView imageView = findViewById(R.id.imageView);
         EditText editText = findViewById(R.id.inputNumber);
+
 
         // 入力データをバーコードに変換する対象データに代入
         targetData = editText.getText().toString();
@@ -40,19 +43,22 @@ public class MainActivity extends AppCompatActivity
         // バーコード表示処理
         DisplayBarcode();
 
-        // 取得したテキストを TextView に張り付ける
-        //textView.setText(text);
+        // バーコード表示を表示状態にする。
+        imageView.setVisibility(View.VISIBLE);
+
+
     }
 
     public void OnClickClearButton(View view)
     {
+        ImageView imageView = findViewById(R.id.imageView);
         EditText editText = findViewById(R.id.inputNumber);
 
         // 入力データを消去
         editText.setText("");
 
-        // バーコード表示を非表示にする。
-
+        // バーコード表示を非表示状態にする。
+        imageView.setVisibility(View.INVISIBLE);
     }
 
 
@@ -80,6 +86,7 @@ public class MainActivity extends AppCompatActivity
         }
         catch (WriterException e)
         {
+            Log.e("ERROR","例外発生");
         }
     }
 
@@ -95,6 +102,7 @@ public class MainActivity extends AppCompatActivity
         // イメージビューに表示する
         imageView.setImageBitmap(bitmap);
 
-        //
+        // 取得したテキストを TextView に張り付ける
+        //textView.setText(text);
     }
 }
