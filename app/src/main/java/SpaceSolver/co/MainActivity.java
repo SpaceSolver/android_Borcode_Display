@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity
         ImageView imageView = findViewById(R.id.imageView);
         EditText editText = findViewById(R.id.inputNumber);
         TextView textView = findViewById(R.id.NumberDisplayView);
+        int[] pix;
 
         try {
             // 入力データをバーコードに変換する対象データに代入
@@ -43,7 +44,8 @@ public class MainActivity extends AppCompatActivity
             // バーコードフォーマット種別を選択
 
             // バーコード表示処理
-            DisplayBarcode();
+            pix = DisplayBarcode();
+            DisplayBitmapImage(pix);
 
             // バーコード表示を表示状態にする。
             imageView.setVisibility(View.VISIBLE);
@@ -75,17 +77,18 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    public void DisplayBarcode()
+    public int[] DisplayBarcode()
     {
         // CODABAR規格用のデータ変換クラスをインスタンス化する
         CodaBarWriter writer = new CodaBarWriter();
+        int[] pixels = null;
 
         try {
             // 対象データを変換する
             BitMatrix bitMatrix = writer.encode(targetData, BarcodeFormat.CODABAR, width, height);
 
             // BitMatrixのデータが「true」の時は「黒」を設定し、「false」の時は「白」を設定する
-            int[] pixels = new int[width * height];
+            pixels = new int[width * height];
             for (int y = 0; y < height; y++)
             {
                 int offset = y * width;
@@ -94,16 +97,16 @@ public class MainActivity extends AppCompatActivity
                     pixels[offset + x] = bitMatrix.get(x, y) ? Color.BLACK : Color.WHITE;
                 }
             }
-
-            DisplayBitmapImage(pixels);
         }
         catch (WriterException e)
         {
             Log.e("ERROR","例外発生");
         }
+        return pixels;
     }
 
-    public void DisplayBitmapImage(int[] pixels) {
+    public void DisplayBitmapImage(int[] pixels)
+    {
         ImageView imageView = findViewById(R.id.imageView);
         TextView textView = findViewById(R.id.NumberDisplayView);
 
