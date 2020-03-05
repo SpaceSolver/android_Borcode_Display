@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
@@ -33,32 +34,44 @@ public class MainActivity extends AppCompatActivity
     {
         ImageView imageView = findViewById(R.id.imageView);
         EditText editText = findViewById(R.id.inputNumber);
+        TextView textView = findViewById(R.id.NumberDisplayView);
 
+        try {
+            // 入力データをバーコードに変換する対象データに代入
+            targetData = editText.getText().toString();
 
-        // 入力データをバーコードに変換する対象データに代入
-        targetData = editText.getText().toString();
+            // バーコードフォーマット種別を選択
 
-        // バーコードフォーマット種別を選択
+            // バーコード表示処理
+            DisplayBarcode();
 
-        // バーコード表示処理
-        DisplayBarcode();
-
-        // バーコード表示を表示状態にする。
-        imageView.setVisibility(View.VISIBLE);
-
-
+            // バーコード表示を表示状態にする。
+            imageView.setVisibility(View.VISIBLE);
+            textView.setVisibility(View.VISIBLE);
+        }
+        catch (Exception e)
+        {
+            Log.e("ERROR","例外発生");
+        }
     }
 
-    public void OnClickClearButton(View view)
-    {
+    public void OnClickClearButton(View view) {
         ImageView imageView = findViewById(R.id.imageView);
         EditText editText = findViewById(R.id.inputNumber);
+        TextView textView = findViewById(R.id.NumberDisplayView);
 
-        // 入力データを消去
-        editText.setText("");
+        try {
+            // 入力データを消去
+            editText.setText("");
 
-        // バーコード表示を非表示状態にする。
-        imageView.setVisibility(View.INVISIBLE);
+            // バーコード表示を非表示状態にする。
+            imageView.setVisibility(View.INVISIBLE);
+            textView.setVisibility(View.INVISIBLE);
+        }
+        catch (Exception e)
+        {
+            Log.e("ERROR","例外発生");
+        }
     }
 
 
@@ -90,19 +103,24 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public void DisplayBitmapImage(int[] pixels)
-    {
+    public void DisplayBitmapImage(int[] pixels) {
         ImageView imageView = findViewById(R.id.imageView);
+        TextView textView = findViewById(R.id.NumberDisplayView);
 
+        try {
+            // ビットマップ形式に変換する
+            Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+            bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
 
-        // ビットマップ形式に変換する
-        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
+            // イメージビューに表示する
+            imageView.setImageBitmap(bitmap);
 
-        // イメージビューに表示する
-        imageView.setImageBitmap(bitmap);
-
-        // 取得したテキストを TextView に張り付ける
-        //textView.setText(text);
+            // 取得したテキストを TextView に張り付ける
+            textView.setText(targetData);
+        }
+        catch (Exception e)
+        {
+            Log.e("ERROR","例外発生");
+        }
     }
 }

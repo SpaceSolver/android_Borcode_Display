@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">BarcodeDisplay</string>
-    <string name="number">Number</string>
     <string name="AddButtonText">作成</string>
     <string name="ClearButtonText">クリア</string>
 </resources>
